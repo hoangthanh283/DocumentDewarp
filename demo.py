@@ -15,11 +15,11 @@ import torchvision.transforms as transforms
 from scipy.spatial import distance as dist
 
 from models.keypoint_net import KeyPointNet
-from modules.keypoints import (
+from utils.keypoints import (
     extract_keypoints, group_keypoints
 )
-from modules.load_state import load_state
-from modules.pose import Pose, propagate_ids
+from utils.load_state import load_state
+from utils.pose import Pose, propagate_ids
 from tools import (
     normalize,
     pad_width,

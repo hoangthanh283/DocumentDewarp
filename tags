@@ -1,0 +1,197 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+AdamW	models/training/optimizers.py	/^class AdamW(Optimizer):$/;"	c
+Averager	utils/tools.py	/^class Averager(object):$/;"	c
+BODY_PARTS_KPT_IDS	utils/keypoints.py	/^BODY_PARTS_KPT_IDS = [[0, 1], [2, 1], [3, 2], [3, 0]]$/;"	v
+BODY_PARTS_PAF_IDS	utils/keypoints.py	/^BODY_PARTS_PAF_IDS = ([0, 1], [2, 3])$/;"	v
+BackBoneBase	models/backbones/backbone_base.py	/^class BackBoneBase(nn.Module):$/;"	c
+CORNERS_KPT_IDS	datasets/data_loader.py	/^CORNERS_KPT_IDS = [[0, 1], [1, 2], [2, 3], [3, 0]]$/;"	v
+ConvertKeypoints	datasets/transformations.py	/^class ConvertKeypoints(object):$/;"	c
+Cpm	models/backbones/mobilenet.py	/^class Cpm(nn.Module):$/;"	c
+CropPad	datasets/transformations.py	/^class CropPad(object):$/;"	c
+DEVICE	models/training/trainer.py	/^DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')$/;"	v
+DEVICE	utils/tools.py	/^DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')$/;"	v
+DewarpModel	demo.py	/^class DewarpModel(object):$/;"	c
+DocumentDataSet	datasets/data_loader.py	/^class DocumentDataSet(Dataset):$/;"	c
+Flip	datasets/transformations.py	/^class Flip(object):$/;"	c
+FormatLabel	datasets/data_loader.py	/^class FormatLabel(object):$/;"	c
+FormatLabel	datasets/format_label.py	/^class FormatLabel(object):$/;"	c
+GetDataLoader	datasets/data_loader.py	/^class GetDataLoader(object):$/;"	c
+IMAGE_POSTFIX	datasets/data_loader.py	/^IMAGE_POSTFIX = "images"$/;"	v
+IMAGE_POSTFIX	datasets/format_label.py	/^IMAGE_POSTFIX = "images"$/;"	v
+InitialStage	models/keypoint_net.py	/^class InitialStage(nn.Module):$/;"	c
+KeyPointNet	models/keypoint_net.py	/^class KeyPointNet(nn.Module):$/;"	c
+LABEL_POSTFIX	datasets/data_loader.py	/^LABEL_POSTFIX = "labels"$/;"	v
+LABEL_POSTFIX	datasets/format_label.py	/^LABEL_POSTFIX = "labels"$/;"	v
+MobileNet	models/backbones/mobilenet.py	/^class MobileNet(nn.Module):$/;"	c
+MobileNetEncoder	models/backbones/mobilenet.py	/^class MobileNetEncoder(BackBoneBase):$/;"	c
+NUM_KEYPOINTS	datasets/data_loader.py	/^NUM_KEYPOINTS = 4$/;"	v
+PlainRAdam	models/training/optimizers.py	/^class PlainRAdam(Optimizer):$/;"	c
+Pose	utils/pose.py	/^class Pose(object):$/;"	c
+RAdam	models/training/optimizers.py	/^class RAdam(Optimizer):$/;"	c
+RefinementStage	models/keypoint_net.py	/^class RefinementStage(nn.Module):$/;"	c
+RefinementStageBlock	models/keypoint_net.py	/^class RefinementStageBlock(nn.Module):$/;"	c
+Rotate	datasets/transformations.py	/^class Rotate(object):$/;"	c
+Saver	utils/tools.py	/^class Saver(object):$/;"	c
+Scale	datasets/transformations.py	/^class Scale(object):$/;"	c
+ShuffleBlock	models/backbones/shufflenet_v2.py	/^class ShuffleBlock(nn.Module):$/;"	c
+ShuffleNet2	models/backbones/shufflenet_v2.py	/^class ShuffleNet2(nn.Module):$/;"	c
+ShuffleNetV2Encoder	models/backbones/shufflenet_v2.py	/^class ShuffleNetV2Encoder(BackBoneBase):$/;"	c
+Trainer	models/training/trainer.py	/^class Trainer(object):$/;"	c
+__all__	models/backbones/__init__.py	/^__all__ = ["BackBoneBase", "MobileNetEncoder", "ShuffleNetV2Encoder", "str2enc"]/;"	v
+__author__	demo.py	/^__author__ = "ThanhHoang <hoangducthanh283@gmail.com>"$/;"	v
+__author__	main.py	/^__author__ = "ThanhHoang <hoangducthanh283@gmail.com>"$/;"	v
+__author__	models/training/trainer.py	/^__author__ = "ThanhHoang"$/;"	v
+__call__	datasets/transformations.py	/^    def __call__(self, sample):$/;"	m	class:ConvertKeypoints	file:
+__call__	datasets/transformations.py	/^    def __call__(self, sample):$/;"	m	class:CropPad	file:
+__call__	datasets/transformations.py	/^    def __call__(self, sample):$/;"	m	class:Flip	file:
+__call__	datasets/transformations.py	/^    def __call__(self, sample):$/;"	m	class:Rotate	file:
+__call__	datasets/transformations.py	/^    def __call__(self, sample):$/;"	m	class:Scale	file:
+__getitem__	datasets/data_loader.py	/^    def __getitem__(self, idx):$/;"	m	class:DocumentDataSet	file:
+__init__	datasets/data_loader.py	/^    def __init__(self, new_size=[256, 256], num_keypoints=4):$/;"	m	class:FormatLabel
+__init__	datasets/data_loader.py	/^    def __init__(self, opt):$/;"	m	class:GetDataLoader
+__init__	datasets/data_loader.py	/^    def __init__(self, opt, is_train=False, transform=None):$/;"	m	class:DocumentDataSet
+__init__	datasets/format_label.py	/^    def __init__(self, img_size=256, num_keypoints=8):$/;"	m	class:FormatLabel
+__init__	datasets/transformations.py	/^    def __init__(self, pad, center_perterb_max=40, crop_x=368, crop_y=368):$/;"	m	class:CropPad
+__init__	datasets/transformations.py	/^    def __init__(self, pad, max_rotate_degree=40):$/;"	m	class:Rotate
+__init__	datasets/transformations.py	/^    def __init__(self, prob=0.5):$/;"	m	class:Flip
+__init__	datasets/transformations.py	/^    def __init__(self, prob=1, min_scale=0.5, max_scale=1.1, target_dist=0.6):$/;"	m	class:Scale
+__init__	demo.py	/^    def __init__(self, weights_path=None):$/;"	m	class:DewarpModel
+__init__	models/backbones/backbone_base.py	/^    def __init__(self):$/;"	m	class:BackBoneBase
+__init__	models/backbones/mobilenet.py	/^    def __init__(self, in_channels, out_channels):$/;"	m	class:Cpm
+__init__	models/backbones/mobilenet.py	/^    def __init__(self, input_channel, output_channel):$/;"	m	class:MobileNetEncoder
+__init__	models/backbones/mobilenet.py	/^    def __init__(self, input_channel=1, output_channel=128):$/;"	m	class:MobileNet
+__init__	models/backbones/shufflenet_v2.py	/^    def __init__(self, in_c, out_c, downsample=False):$/;"	m	class:ShuffleBlock
+__init__	models/backbones/shufflenet_v2.py	/^    def __init__(self, input_channel, output_channel, net_type):$/;"	m	class:ShuffleNetV2Encoder
+__init__	models/backbones/shufflenet_v2.py	/^    def __init__(self, input_channel=1, output_channel=224, net_type=1):$/;"	m	class:ShuffleNet2
+__init__	models/keypoint_net.py	/^    def __init__(self, in_channels, out_channels):$/;"	m	class:RefinementStageBlock
+__init__	models/keypoint_net.py	/^    def __init__(self, in_channels, out_channels, num_heatmaps, num_pafs):$/;"	m	class:RefinementStage
+__init__	models/keypoint_net.py	/^    def __init__(self, num_channels, num_heatmaps, num_pafs):$/;"	m	class:InitialStage
+__init__	models/keypoint_net.py	/^    def __init__(self, opt):$/;"	m	class:KeyPointNet
+__init__	models/training/optimizers.py	/^    def __init__(self, params, lr=1e-3, betas=(0.9, 0.999), eps=1e-8, weight_decay=0):$/;"	m	class:PlainRAdam
+__init__	models/training/optimizers.py	/^    def __init__(self, params, lr=1e-3, betas=(0.9, 0.999), eps=1e-8, weight_decay=0):$/;"	m	class:RAdam
+__init__	models/training/optimizers.py	/^    def __init__(self, params, lr=1e-3, betas=(0.9, 0.999), eps=1e-8, weight_decay=0, warmup = 0):$/;"	m	class:AdamW
+__init__	models/training/trainer.py	/^    def __init__(self, opt):$/;"	m	class:Trainer
+__init__	utils/pose.py	/^    def __init__(self, keypoints, confidence):$/;"	m	class:Pose
+__init__	utils/tools.py	/^    def __init__(self):$/;"	m	class:Averager
+__len__	datasets/data_loader.py	/^    def __len__(self):$/;"	m	class:DocumentDataSet	file:
+__setstate__	models/training/optimizers.py	/^    def __setstate__(self, state):$/;"	m	class:AdamW	file:
+__setstate__	models/training/optimizers.py	/^    def __setstate__(self, state):$/;"	m	class:PlainRAdam	file:
+__setstate__	models/training/optimizers.py	/^    def __setstate__(self, state):$/;"	m	class:RAdam	file:
+__status__	main.py	/^__status__ = "Modules"$/;"	v
+__status__	models/training/trainer.py	/^__status__ = "Module"$/;"	v
+_add_gaussian	datasets/data_loader.py	/^    def _add_gaussian(self, keypoint_map, x, y, stride, sigma):$/;"	m	class:DocumentDataSet
+_convert	datasets/transformations.py	/^    def _convert(self, keypoints, w, h):$/;"	m	class:ConvertKeypoints
+_generate_keypoint_maps	datasets/data_loader.py	/^    def _generate_keypoint_maps(self, sample):$/;"	m	class:DocumentDataSet
+_generate_paf_maps	datasets/data_loader.py	/^    def _generate_paf_maps(self, sample):$/;"	m	class:DocumentDataSet
+_inside	datasets/transformations.py	/^    def _inside(self, point, width, height):$/;"	m	class:CropPad
+_load_label	datasets/data_loader.py	/^    def _load_label(self, sample_path):$/;"	m	class:DocumentDataSet
+_rotate	datasets/transformations.py	/^    def _rotate(self, point, R):$/;"	m	class:Rotate
+_set_paf	datasets/data_loader.py	/^    def _set_paf(self, paf_map, x_a, y_a, x_b, y_b, stride, thickness):$/;"	m	class:DocumentDataSet
+_swap_left_right	datasets/transformations.py	/^    def _swap_left_right(self, keypoints):$/;"	m	class:Flip
+add	utils/tools.py	/^    def add(self, v):$/;"	m	class:Averager
+args	scripts/convert_to_onnx.py	/^    args = parser.parse_args()$/;"	v
+average	utils/tools.py	/^    def average(self):$/;"	m	class:Averager
+channel_shuffle	models/backbones/shufflenet_v2.py	/^def channel_shuffle(x, groups=2):$/;"	f
+checkpoint	scripts/convert_to_onnx.py	/^    checkpoint = torch.load(args.checkpoint_path)$/;"	v
+color	utils/pose.py	/^    color = [0, 0, 255]$/;"	v	class:Pose
+conv	models/backbones/mobilenet.py	/^def conv(in_channels, out_channels, kernel_size=3, padding=1, bn=True, dilation=1, stride=1, relu=True, bias=True):$/;"	f
+conv	models/keypoint_net.py	/^    out_channels, $/;"	f
+conv_1x1_bn	models/backbones/shufflenet_v2.py	/^def conv_1x1_bn(in_c, out_c, stride=1):$/;"	f
+conv_bn	models/backbones/shufflenet_v2.py	/^def conv_bn(in_c, out_c, stride=2):$/;"	f
+conv_dw	models/backbones/mobilenet.py	/^def conv_dw(in_channels, out_channels, kernel_size=3, padding=1, stride=1, dilation=1):$/;"	f
+conv_dw_no_bn	models/backbones/mobilenet.py	/^def conv_dw_no_bn(in_channels, out_channels, kernel_size=3, padding=1, stride=1, dilation=1):$/;"	f
+convert_to_onnx	scripts/convert_to_onnx.py	/^def convert_to_onnx(net, output_name):$/;"	f
+count_parameters	models/backbones/backbone_base.py	/^    def count_parameters(self):$/;"	m	class:BackBoneBase
+count_parameters	models/keypoint_net.py	/^    def count_parameters(self):$/;"	m	class:KeyPointNet
+count_parameters	models/training/trainer.py	/^    def count_parameters(self, model):$/;"	m	class:Trainer
+draw	utils/pose.py	/^    def draw(self, img):$/;"	m	class:Pose
+extract_keypoints	utils/keypoints.py	/^def extract_keypoints(heatmap, all_keypoints, total_keypoint_num):$/;"	f
+format_labeler	datasets/format_label.py	/^    format_labeler = FormatLabel(img_size=512, num_keypoints=4)$/;"	v	class:FormatLabel
+forward	models/backbones/backbone_base.py	/^    def forward(self, x):$/;"	m	class:BackBoneBase
+forward	models/backbones/mobilenet.py	/^    def forward(self, x):$/;"	m	class:Cpm
+forward	models/backbones/mobilenet.py	/^    def forward(self, x):$/;"	m	class:MobileNet
+forward	models/backbones/mobilenet.py	/^    def forward(self, x):$/;"	m	class:MobileNetEncoder
+forward	models/backbones/shufflenet_v2.py	/^    def forward(self, x):$/;"	m	class:ShuffleBlock
+forward	models/backbones/shufflenet_v2.py	/^    def forward(self, x):$/;"	m	class:ShuffleNet2
+forward	models/backbones/shufflenet_v2.py	/^    def forward(self, x):$/;"	m	class:ShuffleNetV2Encoder
+forward	models/keypoint_net.py	/^    def forward(self, x):$/;"	m	class:InitialStage
+forward	models/keypoint_net.py	/^    def forward(self, x):$/;"	m	class:KeyPointNet
+forward	models/keypoint_net.py	/^    def forward(self, x):$/;"	m	class:RefinementStage
+forward	models/keypoint_net.py	/^    def forward(self, x):$/;"	m	class:RefinementStageBlock
+four_point_transform	utils/tools.py	/^def four_point_transform(image, pts):$/;"	f
+generate_annotations	datasets/data_loader.py	/^    def generate_annotations(self, key_points, image_name):$/;"	m	class:FormatLabel
+generate_annotations	datasets/format_label.py	/^    def generate_annotations(self, key_points, image_name):$/;"	m	class:FormatLabel
+get_criterion	models/training/trainer.py	/^    def get_criterion(self):$/;"	m	class:Trainer
+get_key_points	datasets/data_loader.py	/^    def get_key_points(self, image, locations, is_visualize=False):$/;"	m	class:FormatLabel
+get_key_points	datasets/format_label.py	/^    def get_key_points(self, image, locations):$/;"	m	class:FormatLabel
+get_lr	models/training/trainer.py	/^    def get_lr(self, optimizer):$/;"	m	class:Trainer
+get_optimizer	models/training/trainer.py	/^    def get_optimizer(self):$/;"	m	class:Trainer
+get_similarity	utils/pose.py	/^def get_similarity(a, b, threshold=0.5):$/;"	f
+group_keypoints	utils/keypoints.py	/^def group_keypoints(all_keypoints_by_type, pafs, pose_entry_size=20, min_paf_score=0.05, demo=False):$/;"	f
+help	scripts/convert_to_onnx.py	/^                        help='name of output model in ONNX format')$/;"	v
+image_folder	demo.py	/^    image_folder = ""$/;"	v	class:DewarpModel
+initialize_model	models/training/trainer.py	/^    def initialize_model(self, model):$/;"	m	class:Trainer
+kpt_names	utils/pose.py	/^    kpt_names = ['toplef', 'topright',$/;"	v	class:Pose
+l1_loss	models/training/losses.py	/^def l1_loss(input, target, mask, batch_size, weight=None):$/;"	f
+l1_smooth_loss	models/training/losses.py	/^def l1_smooth_loss(input, target, mask, batch_size, weight=None, r_smooth=0.0, scale=1.0):$/;"	f
+l2_loss	models/training/losses.py	/^def l2_loss(input, target, mask, batch_size):$/;"	f
+laplace_loss	models/training/losses.py	/^def laplace_loss(input, target, mask, logb, batch_size, weight=None):$/;"	f
+last_id	utils/pose.py	/^    last_id = -1$/;"	v	class:Pose
+linspace2d	utils/keypoints.py	/^def linspace2d(start, stop, n=10):$/;"	f
+list_files	demo.py	/^        os.path.join(image_folder, f), os.path.listdirs(image_folder)))$/;"	v	class:DewarpModel
+list_folders	datasets/format_label.py	/^        os.path.join(root_dir, p), os.listdir(root_dir)))$/;"	v	class:FormatLabel
+load_checkpoint	utils/tools.py	/^    def load_checkpoint(self, filepath):$/;"	m	class:Saver
+load_model	demo.py	/^    def load_model(self, weights_path):$/;"	m	class:DewarpModel
+load_model_config	models/training/trainer.py	/^    def load_model_config(self):$/;"	m	class:Trainer
+load_model_state	models/training/trainer.py	/^    def load_model_state(self, source_state, prev_opt):$/;"	m	class:Trainer
+load_opt	models/backbones/backbone_base.py	/^    def load_opt(cls, opt):$/;"	m	class:BackBoneBase
+load_opt	models/backbones/mobilenet.py	/^    def load_opt(cls, opt):$/;"	m	class:MobileNetEncoder
+load_opt	models/backbones/shufflenet_v2.py	/^    def load_opt(cls, opt):$/;"	m	class:ShuffleNetV2Encoder
+logger	demo.py	/^logger = logging.getLogger(__name__)$/;"	v
+model	demo.py	/^    model = DewarpModel(model_path)$/;"	v	class:DewarpModel
+model	models/backbones/mobilenet.py	/^    model = MobileNetEncoder(input_channel=1, output_channel=256)$/;"	v
+model	models/backbones/shufflenet_v2.py	/^    model = ShuffleNetV2Encoder(input_channel=1, output_channel=256, net_type=0.5)$/;"	v
+model	models/keypoint_net.py	/^    model = KeyPointNet(opt)$/;"	v	class:KeyPointNet
+model_path	demo.py	/^    model_path = ""$/;"	v	class:DewarpModel
+net	scripts/convert_to_onnx.py	/^    net = PoseEstimationWithMobileNet()$/;"	v
+normalize	utils/tools.py	/^def normalize(img, img_mean, img_scale):$/;"	f
+num_kpts	utils/pose.py	/^    num_kpts = 4$/;"	v	class:Pose
+opt	main.py	/^    opt = parser.parse_known_args()[0]$/;"	v
+opt	models/keypoint_net.py	/^    opt = parser.parse_known_args()[0]$/;"	v	class:KeyPointNet
+out	models/backbones/mobilenet.py	/^    out = model(torch.rand([4, 1, 200, 200]))$/;"	v
+out	models/backbones/shufflenet_v2.py	/^    out = model(torch.rand([4, 1, 200, 200]))$/;"	v
+out	models/keypoint_net.py	/^    out = model(torch.rand([4, 1, 200, 200]))$/;"	v	class:KeyPointNet
+outputs	demo.py	/^    outputs = model.process(list_files)/;"	v	class:DewarpModel
+pad_width	utils/tools.py	/^def pad_width(img, stride, pad_value, min_dims):$/;"	f
+parser	main.py	/^    parser = argparse.ArgumentParser()$/;"	v
+parser	models/keypoint_net.py	/^    parser = argparse.ArgumentParser()$/;"	v	class:KeyPointNet
+parser	scripts/convert_to_onnx.py	/^    parser = argparse.ArgumentParser()$/;"	v
+predict	demo.py	/^    def predict(self, img):$/;"	m	class:DewarpModel
+preprocess	demo.py	/^    def preprocess(self, img):$/;"	m	class:DewarpModel
+process	datasets/data_loader.py	/^    def process(self, image_folder, label_path):$/;"	m	class:FormatLabel
+process	datasets/format_label.py	/^    def process(self, input_folder):$/;"	m	class:FormatLabel
+process	demo.py	/^    def process(self, images):$/;"	m	class:DewarpModel
+propagate_ids	utils/pose.py	/^def propagate_ids(previous_poses, current_poses, threshold=3):$/;"	f
+reset	utils/tools.py	/^    def reset(self):$/;"	m	class:Averager
+resize_image	datasets/data_loader.py	/^    def resize_image(self, image):$/;"	m	class:FormatLabel
+resize_image	datasets/format_label.py	/^    def resize_image(self, image):$/;"	m	class:FormatLabel
+root_dir	datasets/format_label.py	/^    root_dir = ".\/assets\/dewarp_labeled_newcameradata"$/;"	v	class:FormatLabel
+save_checkpoint	utils/tools.py	/^    def save_checkpoint(self, state, filepath='model.pt'):$/;"	m	class:Saver
+sigmas	utils/pose.py	/^    sigmas = np.array([.79, .79, .79, .79, .79], dtype=np.float32) \/ 10.0$/;"	v	class:Pose
+step	models/training/optimizers.py	/^    def step(self, closure=None):$/;"	m	class:AdamW
+step	models/training/optimizers.py	/^    def step(self, closure=None):$/;"	m	class:PlainRAdam
+step	models/training/optimizers.py	/^    def step(self, closure=None):$/;"	m	class:RAdam
+str2enc	models/backbones/__init__.py	/^str2enc = {"mobilenet": MobileNetEncoder, "shufllenetv2": ShuffleNetV2Encoder}$/;"	v
+train	models/training/trainer.py	/^    def train(self):$/;"	m	class:Trainer
+train_batch	models/training/trainer.py	/^    def train_batch(self):$/;"	m	class:Trainer
+trainer	main.py	/^    trainer = Trainer(opt)$/;"	v
+transform_sample	datasets/data_loader.py	/^    def transform_sample(self, sample):$/;"	m	class:DocumentDataSet
+update_id	utils/pose.py	/^    def update_id(self, id=None):$/;"	m	class:Pose
+val_batch	models/training/trainer.py	/^    def val_batch(self):$/;"	m	class:Trainer
+validate_keypoints	demo.py	/^    def validate_keypoints(self, pts, theta=0.3):$/;"	m	class:DewarpModel
+vars	utils/pose.py	/^    vars = (sigmas * 2) ** 2$/;"	v	class:Pose

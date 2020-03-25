@@ -94,4 +94,6 @@ weights/
 .idea/**/markdown-navigator/
 ./data
 ./assets
+assets
+data
 # End of https://www.gitignore.io/api/pycharm

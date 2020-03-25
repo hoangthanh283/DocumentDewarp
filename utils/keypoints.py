@@ -4,8 +4,8 @@ from operator import itemgetter
 
 BODY_PARTS_KPT_IDS = [[0, 1], [2, 1], [3, 2], [3, 0]]
 BODY_PARTS_PAF_IDS = ([0, 1], [2, 3])
-#BODY_PARTS_KPT_IDS = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 0]]
-#BODY_PARTS_PAF_IDS = ([0, 1], [2, 3], [4, 5], [6, 7])
+
+
 
 def linspace2d(start, stop, n=10):
     points = 1 / (n - 1) * (stop - start)
