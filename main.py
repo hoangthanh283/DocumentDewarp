@@ -23,8 +23,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     """ Data params """
     parser.add_argument('--experiment_name', default='Dewarp', help='Where to store logs and models')
-    parser.add_argument('--train_path', default='./assets/dewarp_labeled_newcameradata/Invoice_Toyota4_CameraData_20191223_training_1', help='name of train label file')
-    parser.add_argument('--val_path', default='./assets/dewarp_labeled_newcameradata/Invoice_Toyota4_CameraData_20191223_training_1', help='name of train label val')
+    parser.add_argument('--train_path', default='./assets/Dewarp_Toyota4_data', help='name of train label file')
+    parser.add_argument('--val_path', default='./assets/Invoice_Toyota4_CameraData_20191224', help='name of val label')
     parser.add_argument('--save_path', type=str, default='./weights', help='Path to save logs and models')
     parser.add_argument('--pretrained_path', type=str, default=None, help='Path to pretrained models')
     parser.add_argument('--manualSeed', type=int, default=1111, help='for random seed setting')

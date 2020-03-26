@@ -30,6 +30,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 
+
 class DewarpModel(object):
     """Inference for dewarp for document camera images. 
     Args:

@@ -51,9 +51,7 @@ class AddCoordinates(object):
             coords = torch.cat((coords, rs), dim=0)
 
         coords = torch.unsqueeze(coords, dim=0).repeat(batch_size, 1, 1, 1)
-
         image = torch.cat((coords.to(image.device), image), dim=1)
-
         return image
 
 
@@ -101,7 +99,6 @@ class CoordConv(nn.Module):
     def forward(self, x):
         x = self.coord_adder(x)
         x = self.conv_layer(x)
-
         return x
 
 
@@ -151,7 +148,6 @@ class CoordConvTranspose(nn.Module):
     def forward(self, x):
         x = self.coord_adder(x)
         x = self.conv_tr_layer(x)
-
         return x
 
 

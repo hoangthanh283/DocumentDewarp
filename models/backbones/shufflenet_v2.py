@@ -77,7 +77,6 @@ class ShuffleBlock(nn.Module):
             x2 = x[:, c:, :, :]
             out = torch.cat((x1, self.branch2(x2)), 1)
         return channel_shuffle(out, 2)
-    
 
 class ShuffleNet2(nn.Module):
     def __init__(self, input_channel=1, output_channel=224, net_type=1):
@@ -122,7 +121,6 @@ class ShuffleNet2(nn.Module):
         x = self.stages(x)
         x = self.conv5(x)
         return x
-
 
 class ShuffleNetV2Encoder(BackBoneBase):
     """ An backbone for image embedding

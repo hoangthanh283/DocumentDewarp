@@ -21,7 +21,6 @@ cv2.ocl.setUseOpenCL(False)  # To prevent freeze of DataLoader
 
 NUM_KEYPOINTS = 4
 CORNERS_KPT_IDS = [[0, 1], [1, 2], [2, 3], [3, 0]]
-# CORNERS_KPT_IDS = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 0]]
 
 LABEL_POSTFIX = "labels"
 IMAGE_POSTFIX = "images"
@@ -174,7 +173,7 @@ class FormatLabel(object):
                 bbox[1] + bbox[3] / 2
             ]
         else:
-            print("Number of keypoints are 0!")
+            print("Number of keypoints are 0 with {0}".format(image_name))
             key_points = [[0, 0, 0] for _ in range(self.num_keypoints)]
             bbox = [0, 0, 0, 0]
             doc_center = [0, 0]
