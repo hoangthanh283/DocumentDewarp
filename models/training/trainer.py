@@ -269,8 +269,10 @@ class Trainer(object):
             # Update all loss static
             loss = sum(losses)
             self.val_loss_stat.add(loss.data)
-        logging.debug("Val: Loss: {0} learning rate: {2} Elapsed time: {3}".format(\
-            self.val_loss_stat.average(), self.get_lr(self.optimizer), time.time() - forward_time))
+        #import pdb; pdb.set_trace()
+        print("Val: ", self.val_loss_stat.average(), self.get_lr(self.optimizer), time.time() - forward_time)
+        #logging.debug("Val: Loss: {0} learning rate: {2} Elapsed time: {3}".format(\
+        #    self.val_loss_stat.average(), self.get_lr(self.optimizer), time.time() - forward_time))
         return self.val_loss_stat.average()
 
     def train(self):

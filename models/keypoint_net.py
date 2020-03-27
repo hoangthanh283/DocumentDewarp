@@ -11,10 +11,10 @@ from models.modules.refinement_stages import (
 from models.modules.head_stacks import (
     CompositeField, Shell, HeadStacks
 )
-from models.modules.side_pooling import (
-    CornerPooling, CrossPooling, CenterPooling, \
-    TopPool, BottomPool, LeftPool, RightPool
-)
+#from models.modules.side_pooling import (
+#    CornerPooling, CrossPooling, CenterPooling, \
+#    TopPool, BottomPool, LeftPool, RightPool
+#)
 
 
 
@@ -30,8 +30,8 @@ class KeyPointNet(nn.Module):
         self.opt.input_channel += 2
         self.encoder = str2enc[self.opt.backbone].load_opt(self.opt)
 
-        # Define center pooling
-        self.center_pooling = CenterPooling(self.opt.output_channel)
+        ## Define center pooling
+        #self.center_pooling = CenterPooling(self.opt.output_channel)
         
         # For addition scale, width, keypoint headers
         self.headers = CompositeField(in_features=self.opt.output_channel)
@@ -68,7 +68,7 @@ class KeyPointNet(nn.Module):
     def forward(self, x):
         x = self.add_coordinates(x)
         backbone_features = self.encoder(x)
-        backbone_features = self.center_pooling(backbone_features)
+        #backbone_features = self.center_pooling(backbone_features)
         stages_output = self.initial_stage(backbone_features)
 
         for refinement_stage in self.refinement_stages:

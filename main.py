@@ -31,10 +31,10 @@ if __name__ == '__main__':
     parser.add_argument('--num_workers', type=int, help='number of data loading workers', default=4)
 
     """ Training params """
-    parser.add_argument('--batch_size', type=int, default=4, help='input batch size')
-    parser.add_argument('--num_epoch', type=int, default=1000, help='number of epochs to train for')
+    parser.add_argument('--batch_size', type=int, default=16, help='input batch size')
+    parser.add_argument('--num_epoch', type=int, default=500, help='number of epochs to train for')
     parser.add_argument('--step_interval', type=int, default=200, help='Interval to print result each step')
-    parser.add_argument('--loss', type=str, default='l1', help='Choose the type of loss, l1|l2|laplace|warm')
+    parser.add_argument('--loss', type=str, default='l2', help='Choose the type of loss, l1|l2|laplace|warm')
     parser.add_argument('--optimizer', type=str, default='Radam', help='Choose the type of optimizers, SGD|Adadelta|Adam|Radam|Adamw|PlainRAdam')
     parser.add_argument('--lr', type=float, default=1e-3, help='learning rate, default=1.0 for Adadelta')
     parser.add_argument('--beta1', type=float, default=0.9, help='beta1 for adam. default=0.9')
