@@ -23,7 +23,7 @@ from datasets.data_loader import GetDataLoader
 from models.keypoint_net import KeyPointNet
 import utils.tools as tools
 from models.training.losses import (
-    l2_loss, l1_loss, laplace_loss
+    l2_loss, l1_loss, laplace_loss, margin_loss
 )
 from models.training.optimizers import (
     RAdam, AdamW, PlainRAdam
@@ -231,10 +231,10 @@ class Trainer(object):
             self.train_loss_stat.add(loss.data)
 
             if self.num_step % self.opt.step_interval == 0:
-                logging.debug("Step: {0} Loss: {1} Head losses: {2} learning rate: {3} Elapsed time: {4}".format(\
+                logging.debug("Train Step: {0} Loss: {1} Head losses: {2} learning rate: {3} Elapsed time: {4}".format(\
                     self.num_step, loss.data, total_losses, self.get_lr(self.optimizer), time.time() - self.stime))
             self.num_step += 1
-        return self.train_loss_stat.average()
+        return self.train_loss_stat.average().data
 
     def val_batch(self):
         """ validation or evaluation """
@@ -269,11 +269,9 @@ class Trainer(object):
             # Update all loss static
             loss = sum(losses)
             self.val_loss_stat.add(loss.data)
-        #import pdb; pdb.set_trace()
-        print("Val: ", self.val_loss_stat.average(), self.get_lr(self.optimizer), time.time() - forward_time)
-        #logging.debug("Val: Loss: {0} learning rate: {2} Elapsed time: {3}".format(\
-        #    self.val_loss_stat.average(), self.get_lr(self.optimizer), time.time() - forward_time))
-        return self.val_loss_stat.average()
+        logging.debug("Val: Loss: {0} learning rate: {1} Elapsed time: {2}".format(\
+            self.val_loss_stat.average().data, self.get_lr(self.optimizer), time.time() - forward_time))
+        return self.val_loss_stat.average().data
 
     def train(self):
         self.num_step = 0
@@ -298,11 +296,10 @@ class Trainer(object):
                     "train_loss": train_loss,
                     "val_loss": val_loss
                 }, f'{self.save_folder}/best_loss.pt')
-
-            self.saver.save_checkpoint({
-                "state_dict": self.model.state_dict(),
-                "configs": self.opt,
-                "epoch": epoch,
-                "train_loss": train_loss,
-                "val_loss": val_loss
-            }, os.path.join(self.save_folder, "model_epoch_{0}.pt".format(epoch)))
+        self.saver.save_checkpoint({
+            "state_dict": self.model.state_dict(),
+            "configs": self.opt,
+            "epoch": epoch,
+            "train_loss": train_loss,
+            "val_loss": val_loss
+        }, os.path.join(self.save_folder, "model_epoch_{0}.pt".format(epoch)))

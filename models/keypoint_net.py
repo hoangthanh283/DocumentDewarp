@@ -33,7 +33,7 @@ class KeyPointNet(nn.Module):
         ## Define center pooling
         #self.center_pooling = CenterPooling(self.opt.output_channel)
         
-        # For addition scale, width, keypoint headers
+        # For addition scale, margin, width, keypoint headers
         self.headers = CompositeField(in_features=self.opt.output_channel)
         self.net = Shell(self.encoder, [self.headers], net_scale=8)
         self.initialize_weights(self.net)
@@ -68,7 +68,7 @@ class KeyPointNet(nn.Module):
     def forward(self, x):
         x = self.add_coordinates(x)
         backbone_features = self.encoder(x)
-        #backbone_features = self.center_pooling(backbone_features)
+        # backbone_features = self.center_pooling(backbone_features)
         stages_output = self.initial_stage(backbone_features)
 
         for refinement_stage in self.refinement_stages:

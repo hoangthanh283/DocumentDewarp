@@ -33,7 +33,7 @@ if __name__ == '__main__':
     """ Training params """
     parser.add_argument('--batch_size', type=int, default=16, help='input batch size')
     parser.add_argument('--num_epoch', type=int, default=500, help='number of epochs to train for')
-    parser.add_argument('--step_interval', type=int, default=200, help='Interval to print result each step')
+    parser.add_argument('--step_interval', type=int, default=10, help='Interval to print result each step')
     parser.add_argument('--loss', type=str, default='l2', help='Choose the type of loss, l1|l2|laplace|warm')
     parser.add_argument('--optimizer', type=str, default='Radam', help='Choose the type of optimizers, SGD|Adadelta|Adam|Radam|Adamw|PlainRAdam')
     parser.add_argument('--lr', type=float, default=1e-3, help='learning rate, default=1.0 for Adadelta')
@@ -47,8 +47,8 @@ if __name__ == '__main__':
     parser.add_argument('--warmup', type=float, default=0, help='warmup steps for adam')
 
     """ Data processing """
-    parser.add_argument('--img_height', type=int, default=256, help='the height of the input image')
-    parser.add_argument('--img_width', type=int, default=256, help='the width of the input image, before=800')
+    parser.add_argument('--img_height', type=int, default=512, help='the height of the input image')
+    parser.add_argument('--img_width', type=int, default=512, help='the width of the input image, before=800')
     parser.add_argument('--padding', action='store_false', help='whether to keep ratio then pad for image resize')
     parser.add_argument('--augment', action='store_true', help='whether to augment data or not')
     parser.add_argument('--sigma', type=int, default=7, help='sigma value')
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     parser.add_argument('--stride', type=int, default=8, help='value of stride')
 
     """ Model Architecture """
-    parser.add_argument('--backbone', type=str, default='mobilenet', help='FeatureExtraction stage, shufflenet|mobilenet')
+    parser.add_argument('--backbone', type=str, default='shufllenetv2', help='FeatureExtraction stage, shufflenet|mobilenet')
     parser.add_argument('--input_channel', type=int, default=3, help='the number of input channel of Feature extractor')
     parser.add_argument('--output_channel', type=int, default=256, help='the number of output channel of Feature extractor')
     parser.add_argument('--dropout_rate', type=int, default=0.1, help='Dropout rate for dropout')
