@@ -21,9 +21,9 @@ from torch.nn import DataParallel
 
 from datasets.data_loader import GetDataLoader
 from models.keypoint_net import KeyPointNet
-import utils.tools as tools
+from utils.tools import Averager, Saver
 from models.training.losses import (
-    l2_loss, l1_loss, laplace_loss, margin_loss
+    l2_loss, l1_loss, laplace_loss, margin_loss, l1_smooth_loss
 )
 from models.training.optimizers import (
     RAdam, AdamW, PlainRAdam
@@ -42,7 +42,7 @@ class Trainer(object):
     """ Trainer """
     def __init__(self, opt):
         self.opt = opt
-        self.saver = tools.Saver()
+        self.saver = Saver()
 
         """ model configuration """
         if self.opt.pretrained_path != None:
@@ -74,8 +74,8 @@ class Trainer(object):
         logging.debug("Optimizer: {0}".format(self.opt.optimizer))
 
         """ train and val static averager """
-        self.train_loss_stat = tools.Averager()
-        self.val_loss_stat = tools.Averager()
+        self.train_loss_stat = Averager()
+        self.val_loss_stat = Averager()
 
         """ define save folder """
         self.save_folder = "{0}/{1}".format(self.opt.save_path, self.opt.experiment_name)
@@ -170,6 +170,8 @@ class Trainer(object):
         """ setup loss """
         if 'l2' in self.opt.loss:
             criterion = l2_loss
+        elif 'l1_smooth' in self.opt.loss:
+            criterion = l1_smooth_loss
         elif 'l1' in self.opt.loss:
             criterion = l1_loss
         elif 'laplace' in self.opt.loss:
@@ -196,7 +198,7 @@ class Trainer(object):
         self.train_loss_stat.reset()
         self.optimizer.zero_grad()
 
-        for i, batch_samples in enumerate(self.train_loader):
+        for idx, batch_samples in enumerate(self.train_loader):
             # Input images and label masks 
             images = batch_samples['image'].to(DEVICE)
             keypoint_masks = batch_samples['keypoint_mask'].to(DEVICE)
@@ -213,9 +215,10 @@ class Trainer(object):
 
             # Calculate heat-map and paf losses
             for loss_idx in range(len(total_losses) // 2):
-                losses.append(l2_loss(stages_output[loss_idx * 2], \
+                losses.append(self.criterion(stages_output[loss_idx * 2], \
                     keypoint_maps, keypoint_masks, images.shape[0]))
-                losses.append(l2_loss(stages_output[loss_idx * 2 + 1], \
+                    
+                losses.append(self.criterion(stages_output[loss_idx * 2 + 1], \
                     paf_maps, paf_masks, images.shape[0]))
                 total_losses[loss_idx * 2] += losses[-2].item()
                 total_losses[loss_idx * 2 + 1] += losses[-1].item()

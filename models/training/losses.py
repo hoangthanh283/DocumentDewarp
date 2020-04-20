@@ -1,28 +1,27 @@
 """ Losses """
 import torch
 import logging
-
 LOG = logging.getLogger(__name__)
 
 
 
-def l2_loss(input, target, mask, batch_size):
-    """L2 loss. Loss for a single two-dimensional vector. """
-    loss = (input - target) * mask
-    loss = (loss * loss) / 2 / batch_size
-    return loss.sum()
+def l2_loss(_input, target, mask, batch_size):
+    """ L2 loss. Loss for a single two-dimensional vector. """
+    loss = (_input - target) * mask
+    loss = (loss * loss) / 2
+    return loss.sum() / batch_size
 
-def l1_loss(input, target, mask, batch_size, weight=None):
-    """L1 loss. Loss for a single two-dimensional vector. """
-    loss = torch.sqrt((input - target) ** 2) / 2 / batch_size
+def l1_loss(_input, target, mask, batch_size, weight=None):
+    """ L1 loss. Loss for a single two-dimensional vector. """
+    loss = torch.sqrt((_input - target) ** 2) / 2
     if weight is not None:
         loss = loss * weight
-    return loss.sum()
+    return loss.sum() / batch_size
 
-def l1_smooth_loss(input, target, mask, batch_size, weight=None, r_smooth=0.0, scale=1.0):
+def l1_smooth_loss(_input, target, mask, batch_size, weight=None, r_smooth=0.0, scale=1.0):
     """ L1 smooth loss with smooth threshold. """
     r = r_smooth * scale
-    d = torch.sqrt((input - target)**2) / 2 / batch_size
+    d = torch.sqrt((_input - target)**2) / 2
     smooth_regime = d < r
 
     smooth_loss = 0.5 / r[smooth_regime] * d[smooth_regime] ** 2
@@ -31,21 +30,30 @@ def l1_smooth_loss(input, target, mask, batch_size, weight=None, r_smooth=0.0, s
 
     if weight is not None:
         losses = losses * weight
-    return torch.sum(losses)
+    return torch.sum(losses) / batch_size
 
-def laplace_loss(input, target, mask, logb, batch_size, weight=None):
-    """Loss based on Laplace Distribution.
+def laplace_loss(_input, target, mask, batch_size, weight=None, logb=None):
+    """ Loss based on Laplace Distribution.
     Loss for a single two-dimensional vector with radial spread b.
     """
 
     # left derivative of sqrt at zero is not defined, so prefer torch.norm():
     # https://github.com/pytorch/pytorch/issues/2421
     # norm = torch.sqrt((x1 - t1)**2 + (x2 - t2)**2)
-    norm = (input - target).norm(dim=0)
-    losses = 0.694 + logb + norm * torch.exp(-logb) / batch_size
+
+    logb = [torch.masked_select(logit, mask > 0.5) \
+        for (logit, mask) in zip(_input, target)]
+    logb = torch.cat(logb)
+
+    norm = (_input - target).norm(dim=0)
+    norm = [torch.masked_select(logit, mask > 0.5) \
+        for (logit, mask) in zip(norm, target)]
+    norm = torch.cat(norm)
+
+    losses = 0.694 + logb + norm * torch.exp(-logb)
     if weight is not None:
         losses = losses * weight
-    return torch.sum(losses)
+    return torch.sum(losses) / batch_size
 
 def margin_loss(x1, x2, t1, t2, max_r1, max_r2, max_r3, max_r4):
     def quadrant(xys):
@@ -100,7 +108,7 @@ class SmoothL1Loss(object):
         self.scale_required = scale_required
 
     def __call__(self, x1, x2, _, t1, t2, weight=None):
-        """L1 loss.
+        """ L1 loss.
 
         Loss for a single two-dimensional vector (x1, x2)
         true (t1, t2) vector.

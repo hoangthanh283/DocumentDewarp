@@ -97,4 +97,6 @@ weights/
 assets/
 data/
 env/
+weights/
+tags
 # End of https://www.gitignore.io/api/pycharm

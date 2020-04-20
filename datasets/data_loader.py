@@ -18,29 +18,18 @@ from datasets.transformations import (
 
 cv2.setNumThreads(0)
 cv2.ocl.setUseOpenCL(False)  # To prevent freeze of DataLoader
-
-NUM_KEYPOINTS = 4
-CORNERS_KPT_IDS = [[0, 1], [1, 2], [2, 3], [3, 0]]
-
 LABEL_POSTFIX = "labels"
 IMAGE_POSTFIX = "images"
+CORNERS_KPT_IDS = [[0, 1], [1, 2], [2, 3], [3, 0], [0, 4], [1, 4], [2, 4], [3, 4]]
 
 
 
 class GetDataLoader(object):
     """ Data loader for training & validation """
-    def __init__(self, opt):
-        # Define train transform methods
-        train_transforms = transforms.Compose([
-            # ConvertKeypoints(labels),
-            Scale(prob=1, min_scale=0.5, max_scale=1.1, target_dist=0.6),
-            Rotate(pad=(128, 128, 128), max_rotate_degree=10),
-            CropPad(pad=(128, 128, 128), center_perterb_max=40, crop_x=256, crop_y=256),
-            Flip(prob=0.5)])
-        
+    def __init__(self, opt):        
         # Define train data loader
         self.train_dataset = DocumentDataSet(opt, \
-            is_train=True, transform=train_transforms)
+            is_train=True, transform=None)
         self.train_loader = DataLoader(self.train_dataset, \
             batch_size=opt.batch_size, \
             shuffle=True, num_workers=opt.num_workers)
@@ -58,7 +47,7 @@ class FormatLabel(object):
         img_size (int): size to resize image 
         num_keypoints (int): number of keypoints
     """
-    def __init__(self, new_size=[256, 256], num_keypoints=4):
+    def __init__(self, new_size=(256, 256), num_keypoints=4):
         self.new_size = new_size
         self.num_keypoints = num_keypoints
 
@@ -79,15 +68,15 @@ class FormatLabel(object):
 
         # Resize image & copute padding if needed
         resized_image = cv2.resize(image, (resize_w, resize_h))
-        h_padding = (new_h - resize_h) // 2
-        w_padding = (new_w - resize_w) // 2
+        h_padding = (new_h - resize_h)
+        w_padding = (new_w - resize_w)
 
         padding_image = cv2.copyMakeBorder(
             resized_image,
-            top=h_padding,
-            bottom=h_padding,
-            left=w_padding,
-            right=w_padding,
+            top=h_padding//2,
+            bottom=h_padding - h_padding//2,
+            left=w_padding//2,
+            right=w_padding - w_padding//2,
             borderType=cv2.BORDER_CONSTANT,
             value=[0, 0, 0])
         meta = {"ratio": ratio, "padding": [h_padding, w_padding]}
@@ -127,8 +116,21 @@ class FormatLabel(object):
                     point_y = int(point_y * ratio + h_padding)
                     all_corners.append([point_x, point_y])
 
+                # Find the center point
+                all_point_positions = np.array([[x, y] \
+                    for (x, y) in zip(all_points_x, all_points_y)])
+                momentum = cv2.moments(all_point_positions)
+                c_x = int(momentum['m10'] / momentum['m00'])
+                c_y = int(momentum['m01'] / momentum['m00'])
+                
+                # scale down the point
+                center_point = [\
+                    int(c_x * ratio + w_padding), \
+                    int(c_y * ratio + h_padding)]
+
         if len(all_corners) == 0:
             return (None, new_img)
+
         # Get all the extreme corner points 
         all_corners = np.array(all_corners)
         ex_corners = cv2.convexHull(all_corners) # compute the contour
@@ -137,6 +139,7 @@ class FormatLabel(object):
 
         ex_corners = ex_corners.squeeze(1)
         approx_hull = approx_hull.squeeze(1)
+        ex_corners = ex_corners.tolist() + [center_point]
 
         # Check that there are only 4 points left in the approximate hull 
         # ,if there are more, then need to increase epsilon
@@ -145,9 +148,9 @@ class FormatLabel(object):
             for final_point in approx_hull:
                 cv2.circle(debug_img, \
                     (final_point[0], final_point[1]),5,(0, 255, 255), 5)
-            cv2.drawContours(debug_img, [ex_corners], 0, (0, 255, 0), 5)
+            cv2.drawContours(debug_img, [np.array(ex_corners)], 0, (0, 255, 0), 5)
             plt.imshow(debug_img); plt.show()
-        return (ex_corners.tolist(), new_img)
+        return (ex_corners, new_img)
 
     def generate_annotations(self, key_points, image_name):
         """ Generate annotations for keypoints 
@@ -226,7 +229,7 @@ class DocumentDataSet(Dataset):
         self._paf_thickness = self.opt.paf_thickness
         self.format_labeler = FormatLabel(\
             new_size=[self.opt.img_height, self.opt.img_width], \
-            num_keypoints=NUM_KEYPOINTS)
+            num_keypoints=self.opt.num_heatmaps - 1)
 
         if is_train == True:
             self.sample_path = self.opt.train_path
@@ -266,13 +269,13 @@ class DocumentDataSet(Dataset):
     def _generate_keypoint_maps(self, sample):
         n_rows, n_cols = sample['image'].shape[:2] # height, width 
         keypoint_maps = np.zeros(shape=(\
-            NUM_KEYPOINTS + 1, \
-            n_rows // self._stride, \
-            n_cols // self._stride), \
+            self.opt.num_heatmaps, \
+            math.ceil(n_rows / self._stride), \
+            math.ceil(n_cols / self._stride)), \
             dtype=np.float32)  # +1 for bg
 
         label = sample['label']
-        for keypoint_idx in range(NUM_KEYPOINTS):
+        for keypoint_idx in range(self.opt.num_heatmaps - 1):
             keypoint = label['keypoints'][keypoint_idx]
             if keypoint[2] <= 1:
                 self._add_gaussian(keypoint_maps[keypoint_idx], \
@@ -316,8 +319,8 @@ class DocumentDataSet(Dataset):
         n_pafs = len(CORNERS_KPT_IDS)
         n_rows, n_cols = sample['image'].shape[:2] # height, width
         paf_maps = np.zeros(shape=(n_pafs * 2, \
-            n_rows // self._stride, \
-            n_cols // self._stride), \
+            math.ceil(n_rows / self._stride), \
+            math.ceil(n_cols / self._stride)), \
             dtype=np.float32)
 
         label = sample['label']
@@ -337,18 +340,17 @@ class DocumentDataSet(Dataset):
                                   self._stride, self._paf_thickness)
         return paf_maps
 
-    def transform_sample(self, sample):
+    def _transform_sample(self, sample):
         if self._transform:
             sample = self._transform(sample)
-
-        mask = cv2.resize(sample['mask'], \
-            dsize=None, fx=1/self._stride, \
-            fy=1/self._stride, interpolation=cv2.INTER_AREA)
         
         # Generate key-point masks
         keypoint_maps = self._generate_keypoint_maps(sample)
         sample['keypoint_maps'] = keypoint_maps
         keypoint_mask = np.zeros(shape=keypoint_maps.shape, dtype=np.float32)
+
+        mask = cv2.resize(sample['mask'], \
+            dsize=keypoint_mask.shape[1:], interpolation=cv2.INTER_AREA)
 
         for idx in range(keypoint_mask.shape[0]):
             keypoint_mask[idx] = mask
@@ -358,6 +360,7 @@ class DocumentDataSet(Dataset):
         paf_maps = self._generate_paf_maps(sample)
         sample['paf_maps'] = paf_maps
         paf_mask = np.zeros(shape=paf_maps.shape, dtype=np.float32)
+        
         for idx in range(paf_mask.shape[0]):
             paf_mask[idx] = mask
         sample['paf_mask'] = paf_mask
@@ -380,7 +383,7 @@ class DocumentDataSet(Dataset):
             'image': image,
             'mask': mask
         }
-        sample = self.transform_sample(sample)
+        sample = self._transform_sample(sample)
         return sample
 
     def __len__(self):

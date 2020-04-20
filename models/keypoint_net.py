@@ -22,7 +22,6 @@ class KeyPointNet(nn.Module):
     """ Key point estimation network """
     def __init__(self, opt):
         super(KeyPointNet, self).__init__()
-
         self.opt = opt
 
         # Define coordinate convolution & add up 2 additional coordinate channels
@@ -30,8 +29,8 @@ class KeyPointNet(nn.Module):
         self.opt.input_channel += 2
         self.encoder = str2enc[self.opt.backbone].load_opt(self.opt)
 
-        # Define center pooling
-        self.center_pooling = CenterPooling(self.opt.output_channel)
+        # # Define center pooling
+        # self.center_pooling = CenterPooling(self.opt.output_channel)
         
         # For addition scale, margin, width, keypoint headers
         self.headers = CompositeField(in_features=self.opt.output_channel)

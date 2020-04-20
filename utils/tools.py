@@ -1,15 +1,8 @@
-import os
-import json 
-import difflib
-import zipfile
-import torch
-import torch.nn as nn
-
+import cv2
 import json
 import math
+import argparse
 import numpy as np
-
-DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 
@@ -40,6 +33,7 @@ class Saver(object):
             checkpoint = torch.load(filepath)
         return checkpoint
 
+
 class Averager(object):
     """Compute average for torch.Tensor, used for loss average."""
     def __init__(self):
@@ -59,10 +53,12 @@ class Averager(object):
             res = self.sum / float(self.n_count)
         return res
 
+
 def normalize(img, img_mean, img_scale):
     img = np.array(img, dtype=np.float32)
     img = (img - img_mean) * img_scale
     return img
+
 
 def pad_width(img, stride, pad_value, min_dims):
     h, w = img.shape[:2]
@@ -101,4 +97,4 @@ def four_point_transform(image, pts):
 
     M = cv2.getPerspectiveTransform(pts, dst)
     warped = cv2.warpPerspective(image, M, (maxWidth, maxHeight), flags=cv2.INTER_LINEAR)
-    return warped
+    return (warped, M)
