@@ -11,10 +11,10 @@ from models.modules.refinement_stages import (
 from models.modules.head_stacks import (
     CompositeField, Shell, HeadStacks
 )
-from models.modules.side_pooling import (
-    CornerPooling, CrossPooling, CenterPooling, \
-    TopPool, BottomPool, LeftPool, RightPool
-)
+#from models.modules.side_pooling import (
+#    CornerPooling, CrossPooling, CenterPooling, \
+#    TopPool, BottomPool, LeftPool, RightPool
+#)
 
 
 

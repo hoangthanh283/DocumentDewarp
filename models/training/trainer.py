@@ -299,7 +299,6 @@ class Trainer(object):
                     "train_loss": train_loss,
                     "val_loss": val_loss
                 }, f'{self.save_folder}/best_loss.pt')
-
         self.saver.save_checkpoint({
             "state_dict": self.model.state_dict(),
             "configs": self.opt,
