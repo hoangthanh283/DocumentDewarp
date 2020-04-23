@@ -34,9 +34,9 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', type=int, default=4, help='input batch size')
     parser.add_argument('--num_epoch', type=int, default=1000, help='number of epochs to train for')
     parser.add_argument('--step_interval', type=int, default=10, help='Interval to print result each step')
-    parser.add_argument('--loss', type=str, default='laplace', help='Choose the type of loss, l1|l2|l1_smooth|laplace')
+    parser.add_argument('--loss', type=str, default='l1', help='Choose the type of loss, l1|l2|l1_smooth|laplace')
     parser.add_argument('--optimizer', type=str, default='Radam', help='Choose the type of optimizers, SGD|Adadelta|Adam|Radam|Adamw|PlainRAdam')
-    parser.add_argument('--lr', type=float, default=1e-3, help='learning rate, default=1.0 for Adadelta')
+    parser.add_argument('--lr', type=float, default=1e-4, help='learning rate, default=1.0 for Adadelta')
     parser.add_argument('--beta1', type=float, default=0.9, help='beta1 for adam. default=0.9')
     parser.add_argument('--beta2', type=float, default=0.999, help='beta1 for adam. default=0.9')
     parser.add_argument('--rho', type=float, default=0.95, help='decay rate rho for Adadelta. default=0.95')
@@ -66,7 +66,7 @@ if __name__ == '__main__':
     opt = parser.parse_known_args()[0]
 
     if not opt.experiment_name:
-        opt.experiment_name = f'{opt.Transformation}-{opt.FeatureExtraction}-{opt.SequenceModeling}-{opt.Prediction}'
+        opt.experiment_name = f'{opt.FeatureExtraction}'
         opt.experiment_name += f'-Seed{opt.manualSeed}'
         print(opt.experiment_name)
 
