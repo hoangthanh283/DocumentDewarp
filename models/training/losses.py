@@ -155,7 +155,6 @@ class MultiHeadLoss(torch.nn.Module):
                        for lam, l in zip(self.lambdas, flat_head_losses)
                        if l is not None]
         total_loss = sum(loss_values) if loss_values else None
-
         return total_loss, flat_head_losses
 
 

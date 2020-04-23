@@ -34,8 +34,8 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', type=int, default=4, help='input batch size')
     parser.add_argument('--num_epoch', type=int, default=1000, help='number of epochs to train for')
     parser.add_argument('--step_interval', type=int, default=10, help='Interval to print result each step')
-    parser.add_argument('--loss', type=str, default='l1', help='Choose the type of loss, l1|l2|l1_smooth|laplace')
-    parser.add_argument('--optimizer', type=str, default='Radam', help='Choose the type of optimizers, SGD|Adadelta|Adam|Radam|Adamw|PlainRAdam')
+    parser.add_argument('--loss', type=str, default='l2', help='Choose the type of loss, l1|l2|l1_smooth|laplace')
+    parser.add_argument('--optimizer', type=str, default='Adam', help='Choose the type of optimizers, SGD|Adadelta|Adam|Radam|Adamw|PlainRAdam')
     parser.add_argument('--lr', type=float, default=1e-4, help='learning rate, default=1.0 for Adadelta')
     parser.add_argument('--beta1', type=float, default=0.9, help='beta1 for adam. default=0.9')
     parser.add_argument('--beta2', type=float, default=0.999, help='beta1 for adam. default=0.9')
@@ -45,6 +45,7 @@ if __name__ == '__main__':
     parser.add_argument('--weight_decay', type=float, default=5e-4, help='weight decay (default: 1e-4)')
     parser.add_argument('--momentum', type=float, default=0.9, help='momentum')
     parser.add_argument('--warmup', type=float, default=0, help='warmup steps for adam')
+    parser.add_argument('--lambdas', type=list, default=[1, 1, 1, 1, 1, 1], help='weight parameter for calculate final loss')
 
     """ Data processing """
     parser.add_argument('--img_height', type=int, default=512, help='the height of the input image')
