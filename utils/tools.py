@@ -1,9 +1,9 @@
 import cv2
 import json
 import math
+import torch
 import argparse
 import numpy as np
-
 
 
 class Saver(object):
