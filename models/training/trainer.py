@@ -223,7 +223,6 @@ class Trainer(object):
                 total_losses[loss_idx * 2] += losses[-2].item()
                 total_losses[loss_idx * 2 + 1] += losses[-1].item()
 
-            # import pdb; pdb.set_trace()
             loss_values = [lam * l/1000.0 for lam, l in \
                 zip(self.opt.lambdas, losses) if l is not None]
             loss = sum(loss_values)

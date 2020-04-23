@@ -31,10 +31,10 @@ if __name__ == '__main__':
     parser.add_argument('--num_workers', type=int, help='number of data loading workers', default=4)
 
     """ Training params """
-    parser.add_argument('--batch_size', type=int, default=4, help='input batch size')
+    parser.add_argument('--batch_size', type=int, default=16, help='input batch size')
     parser.add_argument('--num_epoch', type=int, default=1000, help='number of epochs to train for')
     parser.add_argument('--step_interval', type=int, default=50, help='Interval to print result each step')
-    parser.add_argument('--loss', type=str, default='laplace', help='Choose the type of loss, l1|l2|l1_smooth|laplace')
+    parser.add_argument('--loss', type=str, default='l2', help='Choose the type of loss, l1|l2|l1_smooth|laplace')
     parser.add_argument('--optimizer', type=str, default='Adam', help='Choose the type of optimizers, SGD|Adadelta|Adam|Radam|Adamw|PlainRAdam')
     parser.add_argument('--lr', type=float, default=1e-4, help='learning rate, default=1.0 for Adadelta')
     parser.add_argument('--beta1', type=float, default=0.9, help='beta1 for adam. default=0.9')
@@ -48,8 +48,8 @@ if __name__ == '__main__':
     parser.add_argument('--lambdas', type=list, default=[1, 1, 1, 1, 1, 1], help='weight parameter for calculate final loss')
 
     """ Data processing """
-    parser.add_argument('--img_height', type=int, default=512, help='the height of the input image')
-    parser.add_argument('--img_width', type=int, default=512, help='the width of the input image, before=800')
+    parser.add_argument('--img_height', type=int, default=256, help='the height of the input image')
+    parser.add_argument('--img_width', type=int, default=256, help='the width of the input image, before=800')
     parser.add_argument('--padding', action='store_false', help='whether to keep ratio then pad for image resize')
     parser.add_argument('--augment', action='store_true', help='whether to augment data or not')
     parser.add_argument('--sigma', type=int, default=7, help='sigma value')

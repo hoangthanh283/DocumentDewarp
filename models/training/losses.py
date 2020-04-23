@@ -7,13 +7,12 @@ LOG = logging.getLogger(__name__)
 
 def l2_loss(_input, target, mask, batch_size):
     """ L2 loss. Loss for a single two-dimensional vector. """
-    loss = (_input - target) * mask
-    loss = (loss * loss) / 2
+    loss = ((_input - target) * mask) ** 2
     return loss.sum() / batch_size
 
 def l1_loss(_input, target, mask, batch_size, weight=None):
     """ L1 loss. Loss for a single two-dimensional vector. """
-    loss = torch.sqrt((_input - target) ** 2) / 2
+    loss = torch.sqrt(((_input - target) * mask) ** 2)
     if weight is not None:
         loss = loss * weight
     return loss.sum() / batch_size
@@ -21,7 +20,7 @@ def l1_loss(_input, target, mask, batch_size, weight=None):
 def l1_smooth_loss(_input, target, mask, batch_size, weight=None, r_smooth=0.0, scale=1.0):
     """ L1 smooth loss with smooth threshold. """
     r = r_smooth * scale
-    d = torch.sqrt((_input - target)**2) / 2
+    d = torch.sqrt(((_input - target) * mask) **2)
     smooth_regime = d < r
 
     smooth_loss = 0.5 / r[smooth_regime] * d[smooth_regime] ** 2
@@ -45,7 +44,8 @@ def laplace_loss(_input, target, mask, batch_size, weight=None, logb=None):
         for (logit, mask) in zip(_input, target)]
     logb = torch.cat(logb)
 
-    norm = (_input - target).norm(dim=0)
+    # norm = (_input - target).norm(dim=0)
+    norm = torch.sqrt(((_input - target) * mask) **2).norm(dim=0)
     norm = [torch.masked_select(logit, mask > 0.5) \
         for (logit, mask) in zip(norm, target)]
     norm = torch.cat(norm)
