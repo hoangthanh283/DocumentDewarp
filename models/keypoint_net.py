@@ -32,7 +32,7 @@ class KeyPointNet(nn.Module):
         # # Define center pooling
         # self.center_pooling = CenterPooling(self.opt.output_channel)
         
-        # For addition scale, margin, width, keypoint headers
+        # For addition scale, margin, width, spread, keypoint headers
         self.headers = CompositeField(in_features=self.opt.output_channel)
         self.net = Shell(self.encoder, [self.headers], net_scale=8)
         self.initialize_weights(self.net)
