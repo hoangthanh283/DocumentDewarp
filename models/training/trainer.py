@@ -223,7 +223,7 @@ class Trainer(object):
                 total_losses[loss_idx * 2] += losses[-2].item()
                 total_losses[loss_idx * 2 + 1] += losses[-1].item()
 
-            loss_values = [lam * l/1000.0 for lam, l in \
+            loss_values = [lam * l for lam, l in \
                 zip(self.opt.lambdas, losses) if l is not None]
             loss = sum(loss_values)
             
@@ -251,7 +251,7 @@ class Trainer(object):
         for p in self.model.parameters():
             p.requires_grad = False
 
-        for i, batch_samples in enumerate(self.val_loader):
+        for idx, batch_samples in enumerate(self.val_loader):
             # Run infer the stage outputs 
             with torch.no_grad():
                 images = batch_samples['image'].to(DEVICE)
@@ -261,20 +261,28 @@ class Trainer(object):
                 paf_maps = batch_samples['paf_maps'].to(DEVICE)
                 stages_output = self.model(images)
 
-            # Define and get losses
+            # heatmaps loss, paf loss per stage
             losses = []
             total_losses = [0, 0] * (self.opt.num_refinement_stages + 1)
+
+            # Calculate heat-map and paf losses
             for loss_idx in range(len(total_losses) // 2):
-                losses.append(l2_loss(stages_output[loss_idx * 2], \
+                losses.append(self.criterion(stages_output[loss_idx * 2], \
                     keypoint_maps, keypoint_masks, images.shape[0]))
-                losses.append(l2_loss(stages_output[loss_idx * 2 + 1], \
+                    
+                losses.append(self.criterion(stages_output[loss_idx * 2 + 1], \
                     paf_maps, paf_masks, images.shape[0]))
                 total_losses[loss_idx * 2] += losses[-2].item()
                 total_losses[loss_idx * 2 + 1] += losses[-1].item()
 
+            loss_values = [lam * l for lam, l in \
+                zip(self.opt.lambdas, losses) if l is not None]
+            loss = sum(loss_values)
+
             # Update all loss static
             loss = sum(losses)
             self.val_loss_stat.add(loss.data)
+
         logging.debug("Val: Loss: {0} learning rate: {1} Elapsed time: {2}".format(\
             self.val_loss_stat.average().data, self.get_lr(self.optimizer), time.time() - forward_time))
         return self.val_loss_stat.average().data
