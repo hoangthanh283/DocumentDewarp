@@ -31,7 +31,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_workers', type=int, help='number of data loading workers', default=4)
 
     """ Training params """
-    parser.add_argument('--batch_size', type=int, default=4, help='input batch size')
+    parser.add_argument('--batch_size', type=int, default=8, help='input batch size')
     parser.add_argument('--num_epoch', type=int, default=1000, help='number of epochs to train for')
     parser.add_argument('--step_interval', type=int, default=50, help='Interval to print result each step')
     parser.add_argument('--loss', type=str, default='l2', help='Choose the type of loss, l1|l2|l1_smooth|laplace')

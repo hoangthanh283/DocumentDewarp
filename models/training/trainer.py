@@ -283,8 +283,8 @@ class Trainer(object):
             loss = sum(losses)
             self.val_loss_stat.add(loss.data)
 
-        logging.debug("Val: Loss: {0} learning rate: {1} Elapsed time: {2}".format(\
-            self.val_loss_stat.average().data, self.get_lr(self.optimizer), time.time() - forward_time))
+        logging.debug("Val: Loss: {0} Head losses: {1} learning rate: {2} Elapsed time: {3}".format(\
+            self.val_loss_stat.average().data, total_losses, self.get_lr(self.optimizer), time.time() - forward_time))
         return self.val_loss_stat.average().data
 
     def train(self):
