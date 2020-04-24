@@ -300,6 +300,7 @@ class Trainer(object):
             # scheduler.step()
             train_loss = self.train_batch()
             val_loss = self.val_batch()
+            print("\n")
 
             if val_loss < best_loss:
                 best_loss = val_loss
