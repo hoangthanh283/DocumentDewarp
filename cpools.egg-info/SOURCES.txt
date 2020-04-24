@@ -1,5 +1,0 @@
-README.md
-cpools.egg-info/PKG-INFO
-cpools.egg-info/SOURCES.txt
-cpools.egg-info/dependency_links.txt
-cpools.egg-info/top_level.txt

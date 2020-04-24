@@ -51,7 +51,7 @@ class AddCoordinates(object):
             coords = torch.cat((coords, rs), dim=0)
 
         coords = torch.unsqueeze(coords, dim=0).repeat(batch_size, 1, 1, 1)
-        image = torch.cat((coords.to(image.device), image), dim=1)
+        image = torch.cat((coords.to(image.device).float(), image), dim=1)
         return image
 
 

@@ -48,8 +48,8 @@ if __name__ == '__main__':
     parser.add_argument('--lambdas', type=list, default=[1, 1, 1, 1, 1, 1], help='weight parameter for calculate final loss')
 
     """ Data processing """
-    parser.add_argument('--img_height', type=int, default=512, help='the height of the input image')
-    parser.add_argument('--img_width', type=int, default=512, help='the width of the input image, before=800')
+    parser.add_argument('--img_height', type=int, default=380, help='the height of the input image')
+    parser.add_argument('--img_width', type=int, default=380, help='the width of the input image, before=800')
     parser.add_argument('--padding', action='store_false', help='whether to keep ratio then pad for image resize')
     parser.add_argument('--augment', action='store_true', help='whether to augment data or not')
     parser.add_argument('--sigma', type=int, default=7, help='sigma value')
