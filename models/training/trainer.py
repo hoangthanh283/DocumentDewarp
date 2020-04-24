@@ -228,7 +228,7 @@ class Trainer(object):
             loss = sum(loss_values)
             
             self.model.zero_grad()
-            loss.backward()
+            loss.backward(retain_graph=True)
 
             # gradient clipping with 5 (Default)
             torch.nn.utils.clip_grad_norm_(\
