@@ -5,12 +5,12 @@ from torch import nn
 from models.pooling_modules.utils import (
     convolution, residual, corner_pool
 )
-# from models.pooling_modules import (
-#     TopPool, BottomPool, LeftPool, RightPool
-# )
-from models.modules.corner_poolings import (
+from models.pooling_modules import (
     TopPool, BottomPool, LeftPool, RightPool
 )
+# from models.modules.corner_poolings import (
+#     TopPool, BottomPool, LeftPool, RightPool
+# )
 LOG = logging.getLogger(__name__)
 
 
