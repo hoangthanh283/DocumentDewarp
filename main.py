@@ -34,7 +34,7 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', type=int, default=8, help='input batch size')
     parser.add_argument('--num_epoch', type=int, default=1000, help='number of epochs to train for')
     parser.add_argument('--step_interval', type=int, default=50, help='Interval to print result each step')
-    parser.add_argument('--loss', type=str, default='l2', help='Choose the type of loss, l1|l2|l1_smooth|laplace')
+    parser.add_argument('--loss', type=str, default='l1', help='Choose the type of loss, l1|l2|l1_smooth|laplace')
     parser.add_argument('--optimizer', type=str, default='Radam', help='Choose the type of optimizers, SGD|Adadelta|Adam|Radam|Adamw|PlainRAdam')
     parser.add_argument('--lr', type=float, default=1e-3, help='learning rate, default=1.0 for Adadelta')
     parser.add_argument('--beta1', type=float, default=0.9, help='beta1 for adam. default=0.9')
@@ -62,7 +62,7 @@ if __name__ == '__main__':
     parser.add_argument('--output_channel', type=int, default=256, help='the number of output channel of Feature extractor')
     parser.add_argument('--dropout_rate', type=int, default=0.1, help='Dropout rate for dropout')
     parser.add_argument('--num_refinement_stages', type=int, default=2)
-    parser.add_argument('--num_heatmaps', type=int, default=6)
+    parser.add_argument('--num_heatmaps', type=int, default=6, help="number of heat-maps, --> number keypoint = num_heatmaps - 1, as 1 spare for background")
     parser.add_argument('--num_pafs', type=int, default=16)
     opt = parser.parse_known_args()[0]
 

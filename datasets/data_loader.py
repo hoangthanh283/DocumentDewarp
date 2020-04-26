@@ -67,7 +67,7 @@ class FormatLabel(object):
         resize_w = int(w * ratio)
 
         # Resize image & copute padding if needed
-        resized_image = cv2.resize(image, (resize_w, resize_h))
+        resized_image = cv2.resize(image, (resize_w, resize_h), cv2.INTER_AREA)
         h_padding = (new_h - resize_h)
         w_padding = (new_w - resize_w)
 
@@ -112,8 +112,8 @@ class FormatLabel(object):
                 assert min_y < h, max_y <= h
 
                 for (point_x, point_y) in zip(all_points_x, all_points_y):
-                    point_x = int(point_x * ratio + w_padding)
-                    point_y = int(point_y * ratio + h_padding)
+                    point_x = int(point_x * ratio + w_padding//2)
+                    point_y = int(point_y * ratio + h_padding//2)
                     all_corners.append([point_x, point_y])
 
                 # Find the center point
@@ -125,8 +125,8 @@ class FormatLabel(object):
                 
                 # scale down the point
                 center_point = [\
-                    int(c_x * ratio + w_padding), \
-                    int(c_y * ratio + h_padding)]
+                    int(c_x * ratio + w_padding//2), \
+                    int(c_y * ratio + h_padding//2)]
 
         if len(all_corners) == 0:
             return (None, new_img)
