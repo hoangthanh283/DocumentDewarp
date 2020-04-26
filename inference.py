@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-__author__ = "Kristopher, Jason"
-__email__ = "kristopher@cinnamon.is, jason@cinnamon.is"
+__author__ = "ThanhHoang <hoangducthanh283@gmail.com>"
+__status__ = "Modules"
 
 
 import os
 import sys
 import gc
+import shutil
 import random
 import logging
 import numpy as np
@@ -142,7 +143,7 @@ class DewarpModel:
             "scale": scale,
             "pad": pad
         }
-        return (tensor_img.to(self.device), padding_warped_image, meta_data)
+        return (tensor_img.to(self.device), padding_warped_image, img, meta_data)
 
     def validate_keypoints(self, pts, theta=0.3):
         """ Validate all predicted keypoints, only get 4 keypoints (corners).
@@ -204,7 +205,7 @@ class DewarpModel:
         """
         with torch.no_grad():
             # preprocess input image
-            input_tensor, preprocess_img, meta = self.preprocess(img)
+            input_tensor, preprocess_img, origin_img, meta = self.preprocess(img)
 
             # Get prediction
             stages_output = self.model(input_tensor)
@@ -266,8 +267,8 @@ class DewarpModel:
                 affine_trans_img, affine_matrix = \
                     four_point_transform(preprocess_img, valid_pts)
             else:
-                affine_trans_img = img
-                h, w = img.shape[:2]
+                affine_trans_img = origin_img
+                h, w = origin_img.shape[:2]
                 valid_pts = [[0, 0], [w, 0], [w, h], [0, h]]
                 affine_matrix= None
             meta["affine_matrix"] = affine_matrix
@@ -378,14 +379,19 @@ if __name__ == "__main__":
     parser.add_argument('--backbone', type=str, default='shufllenetv2')
     parser.add_argument('--input_channel', type=int, default=3)
     parser.add_argument('--output_channel', type=int, default=256)
-    parser.add_argument('--num_refinement_stages', type=int, default=1)
-    parser.add_argument('--num_heatmaps', type=int, default=5)
-    parser.add_argument('--num_pafs', type=int, default=8)
+    parser.add_argument('--num_refinement_stages', type=int, default=2)
+    parser.add_argument('--num_heatmaps', type=int, default=6)
+    parser.add_argument('--num_pafs', type=int, default=18)
     opt = parser.parse_known_args()[0]
 
-    image_folder = "./assets/Dewarp_Toyota4_data/images"
+    image_folder = "./assets/Invoice_Toyota4_CameraData_20191224/images"
     debug_folder = "./assets/debug"
-    model_path = "./weights/best_loss.pt"
+    # model_path = "./corner_weights/Dewarp/best_loss.pt"
+    model_path = "./best_loss.pt"
+
+    if os.path.exists(debug_folder):
+        shutil.rmtree(debug_folder)
+    os.makedirs(debug_folder)
 
     list_files = list(map(lambda f: \
         os.path.join(image_folder, f), os.listdir(image_folder)))
