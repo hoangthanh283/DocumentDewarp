@@ -12,6 +12,8 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from torch.utils.data.dataset import Dataset
 from torchvision import transforms
+
+from utils.tools import normalize
 from datasets.transformations import (
     ConvertKeypoints, Scale, Rotate, CropPad, Flip
 )
@@ -367,7 +369,8 @@ class DocumentDataSet(Dataset):
 
         # Normalize input image to (-0.5, 0.5)
         image = sample['image'].astype(np.float32)
-        image = (image - 128) / 256
+        # image = (image - 128) / 256
+        image = normalize(image, img_mean=128, img_scale=1/256)
         sample['image'] = image.transpose((2, 0, 1))
         return sample
 
