@@ -15,8 +15,8 @@ import numpy as np
 import cv2
 import torch
 import torch.nn.functional as F
-import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
+import torchvision.transforms as transforms
 from scipy.spatial import distance as dist
 
 from models.keypoint_net import KeyPointNet
@@ -43,12 +43,11 @@ class DewarpModel:
         state_dict (torch.modules): model weights
         prefered_size (int): size of image to normalize (Ex: 256)
     """
-    def __init__(self, opt, weights_path=None):
+    def __init__(self, weights_path=None):
         # check device
         self.device = torch.device('cuda' \
             if torch.cuda.is_available() else 'cpu')
         self.transform = transforms.ToTensor()
-        self.opt = opt
 
         # load model
         self.model, self.prefered_size = \
@@ -64,7 +63,7 @@ class DewarpModel:
         self.stride = 8
         self.upsample_ratio = 4
         self.pad_value = (0, 0, 0)
-        self.img_mean = (128, 128, 128)
+        self.img_mean = 128
         self.img_scale= 1 / 256
         self.num_keypoints = Pose.num_kpts
 
@@ -84,8 +83,9 @@ class DewarpModel:
         state_dict = checkpoint.get("state_dict")
 
         # load model dict
+        self.opt = checkpoint["configs"]
+        self.opt.input_channel -= 2
         model = KeyPointNet(self.opt)
-        # load_state(model, state_dict)
         model.load_state_dict(state_dict)
         return (model, prefered_size)
 
@@ -145,22 +145,15 @@ class DewarpModel:
         }
         return (tensor_img.to(self.device), padding_warped_image, img, meta_data)
 
-    def validate_keypoints(self, pts, theta=0.3):
-        """ Validate all predicted keypoints, only get 4 keypoints (corners).
+    def sort_keypoints(self, pts):
+        """ Sort the keypoints in top-left, top-right, bottom-right, bottom-left order
         Args:
-            pts (list): list of all keypoints positions [(x1, y1), (x2, y2), ..]
-            theta (float): threshold to filter failure keypoints
+            pts (list): list of keypoints [[x1, y1], [x2, y2], ..]
         Return:
-            True or False (Boolean): True is valid keypoints, else False
+            new_pts (list): new list of keypoints
         """
-
-        # Return fail as the number of keypoints is not equal to 4.
-        if len(pts) != 4:
-            return False
-        assert theta < 1.0, "Theta must be smaller than 1 !"
-        pts = np.asarray(pts)
-
         # sort the points based on their x-coordinates
+        pts = np.asarray(pts)
         xSorted = pts[np.argsort(pts[:, 0]), :]
 
         # grab the left-most and right-most points
@@ -179,6 +172,23 @@ class DewarpModel:
         # return the coordinates in top-left, top-right,
         # bottom-right, and bottom-left order
         new_pts = np.array([tl, tr, br, bl], dtype=np.int32)
+        return new_pts.tolist()
+        
+    def validate_keypoints(self, pts, theta=0.3):
+        """ Validate all predicted keypoints, only get 4 keypoints (corners).
+        Args:
+            pts (list): list of all keypoints positions [(x1, y1), (x2, y2), ..]
+            theta (float): threshold to filter failure keypoints
+        Return:
+            True or False (Boolean): True is valid keypoints, else False
+        """
+
+        # Return fail as the number of keypoints is not equal to 4.
+        if len(pts) != 4:
+            return False
+        assert theta < 1.0, "Theta must be smaller than 1 !"
+        new_pts = self.sort_keypoints(pts)
+        new_pts = np.asarray(new_pts)
 
         # get the size of all edges in the rect
         width_a = abs(new_pts[0][0] - new_pts[1][0])
@@ -253,6 +263,16 @@ class DewarpModel:
             pts = list(map(lambda p: [p[0], p[1]], n_keypoints))
             x, y, rect_w, rect_h = cv2.boundingRect(np.array(pts))
             is_valid = self.validate_keypoints(pts)
+            
+            if is_valid == True:
+                pts = self.sort_keypoints(pts)
+
+            # print(pts)
+            # for final_point in pts:
+            #     cv2.circle(preprocess_img, \
+            #         (final_point[0], final_point[1]),10,(0, 255, 255), 10)
+            # cv2.drawContours(preprocess_img, [np.array(pts)], 0, (0, 255, 0), 5)
+            # plt.imshow(preprocess_img); plt.show()
 
             if is_valid == True:
                 valid_pts = pts
@@ -375,19 +395,13 @@ class DewarpModel:
 if __name__ == "__main__":
     """ Unit test """
     import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--backbone', type=str, default='shufllenetv2')
-    parser.add_argument('--input_channel', type=int, default=3)
-    parser.add_argument('--output_channel', type=int, default=256)
-    parser.add_argument('--num_refinement_stages', type=int, default=2)
-    parser.add_argument('--num_heatmaps', type=int, default=6)
-    parser.add_argument('--num_pafs', type=int, default=18)
-    opt = parser.parse_known_args()[0]
+    from preprocessing.dewarp.kris.model import KrisDewarp
+
 
     image_folder = "./assets/Invoice_Toyota4_CameraData_20191224/images"
     debug_folder = "./assets/debug"
-    # model_path = "./corner_weights/Dewarp/best_loss.pt"
-    model_path = "./best_loss.pt"
+    model_path = "./weights/Dewarp/best_loss.pt"
+    dewarp_model_path = "./weights/dewarp_model.pt"
 
     if os.path.exists(debug_folder):
         shutil.rmtree(debug_folder)
@@ -395,10 +409,15 @@ if __name__ == "__main__":
 
     list_files = list(map(lambda f: \
         os.path.join(image_folder, f), os.listdir(image_folder)))
-    model = DewarpModel(opt, model_path)
+    model = DewarpModel(model_path)
+    dewarp_model = KrisDewarp(dewarp_model_path)
 
     for fp in list_files:
         print(fp)
         output = model.process([fp])
         cv2.imwrite(os.path.join(debug_folder, \
             os.path.basename(fp)), output[0]["output"])
+
+        # output = dewarp_model.process(fp)
+        # cv2.imwrite(os.path.join(debug_folder, \
+        #     os.path.basename(fp)), output["output"])
