@@ -92,4 +92,4 @@ if __name__ == "__main__":
 
     model = KeyPointNet(opt)
     out = model(torch.rand([4, 1, 200, 200]))
-    print(out[0][0].shape, model.count_parameters())
+    print(model.count_parameters())
