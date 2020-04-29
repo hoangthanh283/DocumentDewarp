@@ -4,6 +4,8 @@ import math
 import torch
 import argparse
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 
 class Saver(object):
@@ -95,6 +97,11 @@ def four_point_transform(image, pts):
         [maxWidth - 1, maxHeight - 1],
         [0, maxHeight - 1]], dtype = "float32")
 
-    M = cv2.getPerspectiveTransform(pts, dst)
-    warped = cv2.warpPerspective(image, M, (maxWidth, maxHeight), flags=cv2.INTER_LINEAR)
+    #  Calculate Homography
+    M, status = cv2.findHomography(pts, dst)
+    # M = cv2.getPerspectiveTransform(pts, dst)
+
+    #  Warp source image to destination
+    warped = cv2.warpPerspective(image, M, \
+        (maxWidth, maxHeight), flags=cv2.INTER_NEAREST)
     return (warped, M)

@@ -141,6 +141,8 @@ class FormatLabel(object):
 
         ex_corners = ex_corners.squeeze(1)
         approx_hull = approx_hull.squeeze(1)
+        if len(ex_corners) < 4:
+            ex_corners = all_corners 
         ex_corners = ex_corners.tolist() + [center_point]
 
         # Check that there are only 4 points left in the approximate hull 
@@ -213,7 +215,7 @@ class FormatLabel(object):
                 os.path.join(image_folder, image_name), cv2.IMREAD_COLOR)
 
             # Generate key-points
-            key_points, new_img = self.get_key_points(image, locations)
+            key_points, new_img = self.get_key_points(image, locations, is_visualize=False)
             
             # Get annotations from keypoints
             anns = self.generate_annotations(key_points, image_name)
