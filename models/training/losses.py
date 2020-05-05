@@ -12,7 +12,7 @@ def l2_loss(_input, target, mask, batch_size):
 
 def l1_loss(_input, target, mask, batch_size, weight=None):
     """ L1 loss. Loss for a single two-dimensional vector. """
-    loss = torch.abs((_input - target) * mask)
+    loss = torch.abs(_input - target) * mask
     if weight is not None:
         loss = loss * weight
     return loss.sum() / batch_size
