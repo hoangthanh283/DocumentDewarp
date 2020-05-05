@@ -23,9 +23,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     """ Data params """
     parser.add_argument('--experiment_name', default='Dewarp', help='Where to store logs and models')
-    parser.add_argument('--train_path', default='./assets/Dewarp_Toyota4_data', help='name of train label file')
+    parser.add_argument('--train_path', default='./assets/Synthesis', help='name of train label file')
     parser.add_argument('--val_path', default='./assets/Invoice_Toyota4_CameraData_20191224', help='name of val label')
-    parser.add_argument('--save_path', type=str, default='./weights', help='Path to save logs and models')
+    parser.add_argument('--save_path', type=str, default='./l1_syn_weights', help='Path to save logs and models')
     parser.add_argument('--pretrained_path', type=str, default=None, help='Path to pretrained models')
     parser.add_argument('--manualSeed', type=int, default=1111, help='for random seed setting')
     parser.add_argument('--num_workers', type=int, help='number of data loading workers', default=4)
@@ -33,8 +33,8 @@ if __name__ == '__main__':
     """ Training params """
     parser.add_argument('--batch_size', type=int, default=8, help='input batch size')
     parser.add_argument('--num_epoch', type=int, default=1000, help='number of epochs to train for')
-    parser.add_argument('--step_interval', type=int, default=50, help='Interval to print result each step')
-    parser.add_argument('--loss', type=str, default='l2', help='Choose the type of loss, l1|l2|l1_smooth|laplace')
+    parser.add_argument('--step_interval', type=int, default=100, help='Interval to print result each step')
+    parser.add_argument('--loss', type=str, default='l1', help='Choose the type of loss, l1|l2|l1_smooth|laplace')
     parser.add_argument('--optimizer', type=str, default='Radam', help='Choose the type of optimizers, SGD|Adadelta|Adam|Radam|Adamw|PlainRAdam')
     parser.add_argument('--lr', type=float, default=1e-3, help='learning rate, default=1.0 for Adadelta')
     parser.add_argument('--beta1', type=float, default=0.9, help='beta1 for adam. default=0.9')
