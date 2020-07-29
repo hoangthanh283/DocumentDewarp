@@ -395,13 +395,11 @@ class DewarpModel:
 if __name__ == "__main__":
     """ Unit test """
     import argparse
-    from preprocessing.dewarp.kris.model import KrisDewarp
 
-
-    image_folder = "./assets/Invoice_Toyota4_CameraData_20191224/images"
+    image_folder = "./assets/dewarp"
     debug_folder = "./assets/debug"
-    model_path = "./weights/Dewarp/best_loss.pt"
-    dewarp_model_path = "./weights/dewarp_model.pt"
+    model_path = "./new_no_paf_weights/Dewarp/best_loss.pt"
+    #dewarp_model_path = "./weights/dewarp_model.pt"
 
     if os.path.exists(debug_folder):
         shutil.rmtree(debug_folder)
@@ -410,14 +408,10 @@ if __name__ == "__main__":
     list_files = list(map(lambda f: \
         os.path.join(image_folder, f), os.listdir(image_folder)))
     model = DewarpModel(model_path)
-    dewarp_model = KrisDewarp(dewarp_model_path)
 
     for fp in list_files:
         print(fp)
         output = model.process([fp])
-        cv2.imwrite(os.path.join(debug_folder, \
-            os.path.basename(fp)), output[0]["output"])
-
-        # output = dewarp_model.process(fp)
-        # cv2.imwrite(os.path.join(debug_folder, \
-        #     os.path.basename(fp)), output["output"])
+        if not isinstance(output[0]['output'], str):
+            cv2.imwrite(os.path.join(debug_folder, \
+                os.path.basename(fp)), output[0]["output"])

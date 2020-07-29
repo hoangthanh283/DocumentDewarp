@@ -28,7 +28,7 @@ class Saver(object):
         Returns:
 
         """
-        if DEVICE == torch.device('cpu'):
+        if not torch.cuda.is_available():
             checkpoint = torch.load(filepath, \
                 map_location=lambda storage, loc: storage)
         else:

@@ -141,18 +141,20 @@ class FormatLabel(object):
 
         ex_corners = ex_corners.squeeze(1)
         approx_hull = approx_hull.squeeze(1)
-        if len(ex_corners) < 4:
-            ex_corners = all_corners 
+        if len(ex_corners) <= 4:
+            ex_corners = all_corners
+        else:
+            ex_corners = approx_hull
         ex_corners = ex_corners.tolist() + [center_point]
 
         # Check that there are only 4 points left in the approximate hull 
         # ,if there are more, then need to increase epsilon
         if is_visualize == True:
             debug_img = copy.deepcopy(new_img)
-            for final_point in approx_hull:
+            for final_point in ex_corners:
                 cv2.circle(debug_img, \
                     (final_point[0], final_point[1]),5,(0, 255, 255), 5)
-            cv2.drawContours(debug_img, [np.array(ex_corners)], 0, (0, 255, 0), 5)
+            # cv2.drawContours(debug_img, [np.array(ex_corners)], 0, (0, 255, 0), 5)
             plt.imshow(debug_img); plt.show()
         return (ex_corners, new_img)
 
