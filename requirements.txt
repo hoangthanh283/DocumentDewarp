@@ -1,6 +1,6 @@
 torch==1.1.0
 torchvision==0.3.0
-opencv-python==4.0.0.21
+opencv-python==4.2.0.32
 numpy==1.17.1
 scipy==1.1.0
 matplotlib==3.2.2
